@@ -20,4 +20,41 @@ struct
            String.concatWith "," (map Int.toString (List.take (scores, 10))) ^ ".\n")
     end))
 
+  val x : int ref = ref 0
+  val _ = (print (Int.toString (!x)); x := !x + 1; print (Int.toString (!x)))
+
+  val foo : unit =
+  let val z : int ref = ref 0
+  in z := !z + 1; print (Int.toString (!z)) end
+
+  val bar1 : unit -> unit =
+  let val z = ref 0
+  in fn u => (z := !z + 1; print (Int.toString (!z))) end
+
+  fun bar2 (u : unit) : unit =
+  let val z : int ref = ref 0
+  in z := !z + 1; print (Int.toString (!z)) end
+
+  fun bar3 (b : bool) : unit -> unit =
+  let val z : int ref = ref 0
+  in fn u => (z := !z + 1; print (Int.toString (!z))) end
+
+  val bar4 : bool -> unit -> unit =
+  fn b => let val z : int ref = ref 0
+  in fn u => (z := !z + 1; print (Int.toString (!z))) end
+
+  val bar5 : unit -> bool -> unit =
+  let val z : int ref = ref 0
+  in fn u => fn b => (z := !z + 1; print (Int.toString (!z))) end
+
+  val _ = (print "\n";foo;foo;foo)
+  val _ = (print "\n";bar1 (); bar1 (); bar1 ())
+  val _ = (print "\n";bar2 (); bar2 (); bar2 ())
+  val _ = (print "\n";bar3 true (); bar3 true (); bar3 true ())
+  val _ = (print "\n";bar3 false (); bar3 false (); bar3 false ())
+  val _ = (print "\n";bar4 true (); bar4 true (); bar4 true ())
+  val _ = (print "\n";bar4 false (); bar4 false (); bar4 false ())
+  val _ = (print "\n";bar5 () true; bar5 () true; bar5 () true)
+  val _ = (print "\n";bar5 () false; bar5 () false; bar5 () false)
+
 end
